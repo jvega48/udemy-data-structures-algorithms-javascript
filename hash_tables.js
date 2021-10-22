@@ -92,6 +92,17 @@ class HashTables {
     }
 }
 
+
+// Time Complexity
+// best/worse
+// access O(1)
+// search O(n)
+// insertion O(n)
+// deletion O(n)
+
+// Space complexity
+// O(n)
+
 let hstable = new HashTables(5);
 
 hstable._put('aa', 0)
