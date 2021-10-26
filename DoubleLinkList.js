@@ -1,4 +1,4 @@
-class LinkedList {
+class DoublyLinkedList {
     constructor(value) {
 
         this.head = new Node(value)
@@ -10,6 +10,7 @@ class LinkedList {
     // it will append node at the end of the list
     _append(value) {
         let newNode = new Node(value);
+        newNode.prev = this.tail;
         this.tail.next = newNode;
         this.tail = newNode;
         this.length++;
@@ -20,7 +21,8 @@ class LinkedList {
     _prepend(value) {
         let newNode = new Node(value);
         newNode.next = this.head;
-        this.head = newNode;
+        this.head.prev = newNode;
+        this.head = newNode
         this.length++;
         return this;
     }
@@ -71,12 +73,16 @@ class LinkedList {
         }
         let newNode = new Node(value)
         let nodeAtIndex = this._traversToIndex(index - 1)
-        let pointToNodeAtIndex = nodeAtIndex.next;
-        nodeAtIndex.next = newNode;
-        newNode.next = pointToNodeAtIndex;
-        this.length++;
-        return this.head;
 
+        if (nodeAtIndex) {
+            let pointToNodeAtIndex = nodeAtIndex.next;
+            nodeAtIndex.next = newNode;
+            newNode.prev = nodeAtIndex
+            newNode.next = pointToNodeAtIndex;
+            pointToNodeAtIndex.prev = newNode;
+            this.length++;
+            return this.head;
+        }
 
     }
     size() {
@@ -93,33 +99,13 @@ class LinkedList {
         }
         return items;
     }
-
-    _reverseLinkList() {
-        if (!this.head.next) {
-            return this.head;
-        }
-
-        let first = this.head;
-        let second = first.next;
-        this.tail = this.head;
-        while (second) {
-            let temp = second.next;
-            second.next = first;
-            first = second;
-            second = temp;
-        }
-        this.head.next = null;
-        this.head = first;
-
-        return this;
-    }
-
 }
 
 class Node {
     constructor(data) {
         this.data = data;
         this.next = null;
+        this.prev = null;
     }
 
     __str__() {
@@ -127,12 +113,9 @@ class Node {
     }
 
 }
-let linklist = new LinkedList(20);
-let list2 = new LinkedList("c");
-linklist._insertRandomItems(linklist, 10)
-linklist._insertRandomCharsPrepend(list2, 120)
-console.log("node at 5", linklist._traversToIndex(6))
-console.log("node at 5", list2._traversToIndex(6))
-console.log("the size", linklist._printList())
-console.log("the size", linklist._printList())
-console.log(linklist._reverseLinkList())
+
+let list = new DoublyLinkedList(99);
+
+console.log(list._append(100))
+console.log(list._prepend(666))
+console.log(list._printList())
